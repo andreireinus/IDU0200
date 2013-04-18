@@ -14,25 +14,26 @@
 	</div>
 	<div ng-show="currentTab.type == 'addressList'">
 
-		<table class="table table-condensed">
-			<tbody>
-			<tr>
-				<th>Maakond</th>
-				<td ng-bind="primaryAddress.county"></td>
-			</tr>
-			<tr>
-				<th>Linn</th>
-				<td>asdf</td>
-			</tr>
-			<tr>
-				<th>Address</th>
-				<td>asdfasd</td>
-			</tr>
-			</tbody>
-		</table>
 
-		<div>
-			Pohiaadressi andmed
+
+		<div style="width: 50%; margin: auto;">
+			<table class="table table-condensed">
+				<caption>P&otilde;hiaadress</caption>
+				<tbody>
+				<tr>
+					<th>Maakond</th>
+					<td ng-bind="primaryAddress.county"></td>
+				</tr>
+				<tr>
+					<th>Linn</th>
+					<td>asdf</td>
+				</tr>
+				<tr>
+					<th>Address</th>
+					<td>asdfasd</td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
 
 		<table class="table table-condensed">
