@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="Praktika:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/Praktika_war</output-path>
+    <root id="archive" name="Praktika_war.war">
+      <element id="artifact" artifact-name="Praktika:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="jpa-descriptors" facet="Praktika/jpa/JPA" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
