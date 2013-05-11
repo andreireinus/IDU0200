@@ -10,7 +10,7 @@ public class CommunicationDeviceType {
 
     @Column(name = "comm_device_type", nullable = false, insertable = true, updatable = true, length = 30, precision = 0)
     @Id
-    long getId() {
+    public long getId() {
         return id;
     }
 

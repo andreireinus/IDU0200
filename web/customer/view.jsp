@@ -8,14 +8,14 @@
 		<li ng-repeat="item in tabItems" ng-class="getTabCssClass(item)">
 			<a href="javascript:void(0);" ng-click="setActiveTab(item)" ng-bind="item.text"></a>
 		</li>
+		<li>
+			<a href="r?c=customer&a=change&id=<%=request.getParameter("id")%>" class="button">Muuda</a>
+		</li>
 	</ul>
 	<div ng-show="currentTab.type == 'customerMain'">
 		CustomerMain
 	</div>
 	<div ng-show="currentTab.type == 'addressList'">
-
-
-
 		<div style="width: 50%; margin: auto;">
 			<table class="table table-condensed">
 				<caption>P&otilde;hiaadress</caption>
@@ -26,7 +26,7 @@
 				</tr>
 				<tr>
 					<th>Linn</th>
-					<td>asdf</td>
+					<td ng-bind="primaryAddress.townCounty"></td>
 				</tr>
 				<tr>
 					<th>Address</th>
@@ -46,12 +46,13 @@
 			</tr>
 			</thead>
 			<tbody>
-			<tr ng-repeat="address in addresses" ng-show="address.addressType != 'Primary'">
+			<tr ng-repeat="address in addresses">
 				<td ng-bind="address.county"></td>
 				<td ng-bind="address.townCounty"></td>
 				<td ng-bind="formatAddress(address)"></td>
 				<td>
-					<button class="btn" ng-click="setPrimaryAddress(address)">M&auml;&auml;ra primaarseks</button>
+					<button class="btn" ng-click="setPrimaryAddress(address)" ng-show="address.addressType != 'Primary'">M&auml;&auml;ra primaarseks</button>
+					<button class="btn" ng-click="openAddressChange(address)">Muuda</button>
 				</td>
 			</tr>
 			</tbody>

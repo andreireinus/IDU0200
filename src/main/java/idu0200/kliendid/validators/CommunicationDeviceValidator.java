@@ -5,7 +5,7 @@ import idu0200.kliendid.model.CommunicationDevice;
 
 import java.util.Map;
 
-public class CommunicationDeviceValidator extends ValidatorBase<CommunicationDevice> {
+public class CommunicationDeviceValidator extends Validator<CommunicationDevice> {
     @Override
     public ValidationResult validate(Map<String, String[]> input, ValidationResult<CommunicationDevice> result) {
 

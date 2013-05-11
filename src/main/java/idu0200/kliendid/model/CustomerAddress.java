@@ -21,14 +21,14 @@ public class CustomerAddress {
     private String note;
     private Long country;
 
-    @Column(name = "cst_address", nullable = false, insertable = true, updatable = true, length = 30, precision = 0)
+    @Column(name = "cst_address", nullable = false, insertable = true, updatable = false, length = 30, precision = 0)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
     }
 
-    void setId(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -44,61 +44,61 @@ public class CustomerAddress {
 
     @Column(name = "zip", nullable = true, insertable = true, updatable = true, length = 20, precision = 0)
     @Basic
-    String getZip() {
+    public String getZip() {
         return zip;
     }
 
-    void setZip(String zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
 
     @Column(name = "house", nullable = true, insertable = true, updatable = true, length = 100, precision = 0)
     @Basic
-    String getHouse() {
+    public String getHouse() {
         return house;
     }
 
-    void setHouse(String house) {
+    public void setHouse(String house) {
         this.house = house;
     }
 
     @Column(name = "address", nullable = true, insertable = true, updatable = true, length = 100, precision = 0)
     @Basic
-    String getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    void setAddress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
     @Column(name = "county", nullable = true, insertable = true, updatable = true, length = 100, precision = 0)
     @Basic
-    String getCounty() {
+    public String getCounty() {
         return county;
     }
 
-    void setCounty(String county) {
+    public void setCounty(String county) {
         this.county = county;
     }
 
     @Column(name = "parish", nullable = true, insertable = true, updatable = true, length = 100, precision = 0)
     @Basic
-    String getParish() {
+    public String getParish() {
         return parish;
     }
 
-    void setParish(String parish) {
+    public void setParish(String parish) {
         this.parish = parish;
     }
 
     @Column(name = "town_county", nullable = true, insertable = true, updatable = true, length = 100, precision = 0)
     @Basic
-    String getTownCounty() {
+    public String getTownCounty() {
         return townCounty;
     }
 
-    void setTownCounty(String townCounty) {
+    public void setTownCounty(String townCounty) {
         this.townCounty = townCounty;
     }
 
@@ -114,51 +114,51 @@ public class CustomerAddress {
 
     @Column(name = "phone", nullable = true, insertable = true, updatable = true, length = 20, precision = 0)
     @Basic
-    String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    void setPhone(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
     @Column(name = "sms", nullable = true, insertable = true, updatable = true, length = 20, precision = 0)
     @Basic
-    String getSms() {
+    public String getSms() {
         return sms;
     }
 
-    void setSms(String sms) {
+    public void setSms(String sms) {
         this.sms = sms;
     }
 
     @Column(name = "mobile", nullable = true, insertable = true, updatable = true, length = 20, precision = 0)
     @Basic
-    String getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    void setMobile(String mobile) {
+    public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
     @Column(name = "email", nullable = true, insertable = true, updatable = true, length = 30, precision = 0)
     @Basic
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
     @Column(name = "note", nullable = true, insertable = true, updatable = true, length = 50, precision = 0)
     @Basic
-    String getNote() {
+    public String getNote() {
         return note;
     }
 
-    void setNote(String note) {
+    public void setNote(String note) {
         this.note = note;
     }
 

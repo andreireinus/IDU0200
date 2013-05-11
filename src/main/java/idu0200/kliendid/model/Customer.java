@@ -1,7 +1,6 @@
 package idu0200.kliendid.model;
 
 import flexjson.JSON;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Iterator;
@@ -59,7 +58,7 @@ public class Customer {
 
     @Column(name = "identity_code", nullable = true, insertable = true, updatable = true, length = 20, precision = 0)
     @Basic
-    String getIdentityCode() {
+    public String getIdentityCode() {
         return identityCode;
     }
 

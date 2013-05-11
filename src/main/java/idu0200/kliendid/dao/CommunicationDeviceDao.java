@@ -8,8 +8,8 @@ import java.util.List;
 
 public class CommunicationDeviceDao extends DaoBase<CommunicationDevice> {
 
-    public CommunicationDeviceDao(EntityManager entityManager, Class<CommunicationDevice> entityClass) {
-        super(entityManager, entityClass);
+    public CommunicationDeviceDao(EntityManager entityManager) {
+        super(entityManager, CommunicationDevice.class);
     }
 
     public List<CommunicationDevice> getListByCustomer(long customerId) {

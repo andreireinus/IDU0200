@@ -7,8 +7,8 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class CommunicationDeviceTypeDao extends DaoBase<CommunicationDeviceType> {
-    public CommunicationDeviceTypeDao(EntityManager entityManager, Class<CommunicationDeviceType> entityClass) {
-        super(entityManager, entityClass);
+    public CommunicationDeviceTypeDao(EntityManager entityManager) {
+        super(entityManager, CommunicationDeviceType.class);
     }
 
     public List<CommunicationDeviceType> getList() {

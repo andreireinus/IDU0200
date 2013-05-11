@@ -12,7 +12,7 @@
 		<div class="control-group">
 			<label class="control-label" for="name">Nimi</label>
 			<div class="controls">
-				<input type="text" id="name" name="name" value="<%=item.getName()%>">
+				<input required type="text" id="name" name="name" value="<%=item.getName()%>">
 			</div>
 		</div>
 

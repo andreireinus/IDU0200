@@ -70,7 +70,7 @@ public class CommunicationDevice {
 
     private Timestamp created;
 
-    @Column(name = "created", nullable = true, insertable = true, updatable = true, length = 29, precision = 6)
+    @Column(name = "created", nullable = true, insertable = true, updatable = false, length = 29, precision = 6)
     @Basic
     public Timestamp getCreated() {
         return created;

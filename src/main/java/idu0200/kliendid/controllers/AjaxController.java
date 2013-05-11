@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @WebServlet(name = "Ajax", urlPatterns = "/ajax")
-public class AjaxController extends ControllerBase {
+public class AjaxController extends XControllerBase {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         ensureSession(request);
@@ -43,6 +43,9 @@ public class AjaxController extends ControllerBase {
             handleAddress(variables, request, response);
         }
     }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        doGet(request, response);
+    }
 
     private void handleAddress(AjaxRequestVariables vars, HttpServletRequest request, HttpServletResponse response) {
         EntityManager em = getEntityManager();
@@ -59,14 +62,6 @@ public class AjaxController extends ControllerBase {
             sendCustomerAddressList(vars, response, db);
         }
         em.close();
-    }
-
-    private void sendCustomerAddressList(AjaxRequestVariables vars, HttpServletResponse response, CustomerDao db) {
-        Customer customer = db.getById(vars.getId());
-        Object[] result = new Object[2];
-        result[0] = customer.getPrimaryAddress();
-        result[1] = customer.getAddresses();
-        writeResponse(response, result);
     }
 
     private void handleGroups(AjaxRequestVariables vars, HttpServletRequest request, HttpServletResponse response) {
@@ -121,23 +116,11 @@ public class AjaxController extends ControllerBase {
         em.close();
     }
 
-    private Group createGroup(Customer customer, GroupDefinition definition) {
-        Date date = new Date();
-        Group group = new Group();
-
-        group.setCreated(new Timestamp(date.getTime()));
-        group.setCreatedBy(getCurrentUser());
-        group.setCustomer(customer);
-        group.setDefinition(definition);
-
-        return group;
-    }
-
     private void handleDevices(AjaxRequestVariables vars, HttpServletRequest request, HttpServletResponse response) {
         EntityManager em = getEntityManager();
 
-        CommunicationDeviceDao dbDevice = new CommunicationDeviceDao(em, CommunicationDevice.class);
-        CommunicationDeviceTypeDao dbType = new CommunicationDeviceTypeDao(em, CommunicationDeviceType.class);
+        CommunicationDeviceDao dbDevice = new CommunicationDeviceDao(em);
+        CommunicationDeviceTypeDao dbType = new CommunicationDeviceTypeDao(em);
 
         if (vars.getFormat().equals("customerList")) {
             List<CommunicationDevice> list = dbDevice.getListByCustomer(vars.getId());
@@ -196,6 +179,39 @@ public class AjaxController extends ControllerBase {
 
         em.close();
     }
+
+    private void handleCustomer(String format, HttpServletRequest request, HttpServletResponse response) {
+        EntityManager em = getEntityManager();
+        CustomerDao db = new CustomerDao(em);
+
+        List<Customer> list = db.getList();
+        writeResponse(response, list);
+
+        em.close();
+    }
+
+
+    private void sendCustomerAddressList(AjaxRequestVariables vars, HttpServletResponse response, CustomerDao db) {
+        Customer customer = db.getById(vars.getId());
+        Object[] result = new Object[2];
+        result[0] = customer.getPrimaryAddress();
+        result[1] = customer.getAddresses();
+        writeResponse(response, result);
+    }
+
+
+    private Group createGroup(Customer customer, GroupDefinition definition) {
+        Date date = new Date();
+        Group group = new Group();
+
+        group.setCreated(new Timestamp(date.getTime()));
+        group.setCreatedBy(getCurrentUser());
+        group.setCustomer(customer);
+        group.setDefinition(definition);
+
+        return group;
+    }
+
 
     protected void handleException(Exception e, EntityManager em, HttpServletRequest request, HttpServletResponse response) {
         if (em != null && em.getTransaction().isActive()) {
@@ -274,15 +290,6 @@ public class AjaxController extends ControllerBase {
         }
     }
 
-    private void handleCustomer(String format, HttpServletRequest request, HttpServletResponse response) {
-        EntityManager em = getEntityManager();
-        CustomerDao db = new CustomerDao(em);
-
-        List<Customer> list = db.getList();
-        writeResponse(response, list);
-
-        em.close();
-    }
 
     private void emptyResponse(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -292,8 +299,5 @@ public class AjaxController extends ControllerBase {
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        doGet(request, response);
-    }
 
 }
