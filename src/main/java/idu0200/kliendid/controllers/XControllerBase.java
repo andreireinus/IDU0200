@@ -17,7 +17,15 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 public class XControllerBase extends HttpServlet {
+    static EntityManagerFactory factory;
     private HttpSession session;
+
+    protected EntityManager getEntityManager() {
+        if (factory == null) {
+            factory = Persistence.createEntityManagerFactory("idu0200");
+        }
+        return factory.createEntityManager();
+    }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -92,6 +100,22 @@ public class XControllerBase extends HttpServlet {
         getSession().setAttribute("user_id", id);
     }
 
+    public Employee getCurrentUser() {
+        if (!isAuthenticated()) {
+            return null;
+        }
+
+        EntityManager em = getEntityManager();
+        EmployeeDao db = new EmployeeDao(em);
+        Employee employee = db.getById(getAuthedUserId());
+        em.close();
+
+        return employee;
+    }
+
+    protected boolean isAuthenticated() {
+        return (getAuthedUserId() > 0);
+    }
 
     protected long getId(HttpServletRequest request) {
         if (request.getParameter("id") == null) {

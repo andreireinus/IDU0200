@@ -1,7 +1,10 @@
 package idu0200.kliendid.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Table(name = "comm_device_type")
 @Entity
@@ -30,14 +33,15 @@ public class CommunicationDeviceType {
         this.name = name;
     }
 
-    private List<CommunicationDevice> devices;
+    private Set<CommunicationDevice> devices;
 
     @OneToMany(mappedBy = "type")
-    public List<CommunicationDevice> getDevices() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<CommunicationDevice> getDevices() {
         return devices;
     }
 
-    public void setDevices(List<CommunicationDevice> devices)  {
+    public void setDevices(Set<CommunicationDevice> devices)  {
         this.devices = devices;
     }
 

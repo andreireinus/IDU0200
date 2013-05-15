@@ -1,10 +1,13 @@
 package idu0200.kliendid.model;
 
 import flexjson.JSON;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @NamedQueries({
@@ -21,9 +24,9 @@ public class Customer {
     private Timestamp updated;
     private Employee createdBy;
     private Employee updatedBy;
-
-    private List<Group> groups;
-    private List<CustomerAddress> addresses;
+    private Set<Group> groups;
+    private Set<CustomerAddress> addresses;
+    private Set<CommunicationDevice> devices;
 
     @Column(name = "customer", nullable = false, insertable = true, updatable = true, length = 30, precision = 0)
     @Id
@@ -82,7 +85,7 @@ public class Customer {
         return created;
     }
 
-    void setCreated(Timestamp created) {
+    public void setCreated(Timestamp created) {
         this.created = created;
     }
 
@@ -165,11 +168,12 @@ public class Customer {
 
     @OneToMany
     @JoinColumn(name = "customer", referencedColumnName = "customer")
-    public List<Group> getGroups() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<Group> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(Set<Group> groups) {
         this.groups = groups;
     }
 
@@ -191,12 +195,24 @@ public class Customer {
 
     @OneToMany
     @JoinColumn(name = "customer", referencedColumnName = "customer")
-    public List<CustomerAddress> getAddresses() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<CustomerAddress> getAddresses() {
         return this.addresses;
     }
 
-    public void setAddresses(List<CustomerAddress> addresses) {
+    public void setAddresses(Set<CustomerAddress> addresses) {
         this.addresses = addresses;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "customer", referencedColumnName = "customer")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<CommunicationDevice> getDevices() {
+        return this.devices;
+    }
+
+    public void setDevices(Set<CommunicationDevice> devices) {
+        this.devices = devices;
     }
 
     @Transient

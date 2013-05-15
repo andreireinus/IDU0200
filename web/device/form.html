@@ -1,0 +1,30 @@
+<form class="form-horizontal">
+	<div ng-class="getFormFieldClass('type', device, errorMessages)">
+		<label class="control-label" for="type">Liik</label>
+
+		<div class="controls">
+			<select id="type" ng-model="device.type.id" ng-options="o.id as o.name for o in deviceTypes"></select>
+			<span class="help-inline" ng-show="errorMessages.type" ng-bind-html-unsafe="errorMessages.type"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('valueText', device, errorMessages)">
+		<label class="control-label" for="valueText">V&auml;&auml;rtus</label>
+
+		<div class="controls">
+			<input type="text" id="valueText" ng-model="device.valueText">
+			<span class="help-inline" ng-show="errorMessages.valueText" ng-bind-html-unsafe="errorMessages.valueText"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('orderBy', device, errorMessages)">
+		<label class="control-label" for="orderBy">J&auml;rjekord</label>
+
+		<div class="controls">
+			<input type="text" id="orderBy" ng-model="device.orderBy">
+			<span class="help-inline" ng-show="errorMessages.orderBy" ng-bind-html-unsafe="errorMessages.orderBy"></span>
+		</div>
+	</div>
+	<div class="form-actions">
+		<a ng-click="save(device)" type="submit" class="btn btn-primary">Salvesta</a>
+		<a ng-click="navigateCancel()" class="btn">Katkesta</a>
+	</div>
+</form>

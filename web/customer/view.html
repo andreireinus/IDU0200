@@ -1,0 +1,152 @@
+<ul class="nav nav-tabs">
+	<li ng-repeat="item in tabItems" ng-class="getTabCssClass(item)">
+		<a href="javascript:void(0);" ng-click="setActiveTab(item)" ng-bind-html-unsafe="item.text"></a>
+	</li>
+</ul>
+<div ng-show="currentTab.type == 'main'">
+	<form class="form-horizontal">
+		<div ng-class="getFormFieldClass('firstName', customer, errorMessages)">
+			<label class="control-label" for="firstName">Eesnimi</label>
+
+			<div class="controls">
+				<input type="text" id="firstName" name="firstName" ng-model="customer.firstName">
+				<span class="help-inline" ng-show="errorMessages.firstName" ng-bind="errorMessages.firstName"></span>
+			</div>
+		</div>
+		<div ng-class="getFormFieldClass('lastName', customer, errorMessages)">
+			<label class="control-label" for="lastName">Perenimi</label>
+
+			<div class="controls">
+				<input type="text" id="lastName" name="lastName" ng-model="customer.lastName">
+				<span class="help-inline" ng-show="errorMessages.lastName" ng-bind="errorMessages.lastName"></span>
+
+			</div>
+		</div>
+		<div ng-class="getFormFieldClass('identityCode', customer, errorMessages)">
+			<label class="control-label" for="identityCode">Isikukood</label>
+
+			<div class="controls">
+				<input type="text" id="identityCode" name="identityCode" ng-model="customer.identityCode">
+				<span class="help-inline" ng-show="errorMessages.identityCode"
+					  ng-bind="errorMessages.identityCode"></span>
+			</div>
+		</div>
+		<div ng-class="getFormFieldClass('birthDate', customer, errorMessages)">
+			<label class="control-label" for="birthDate">S&uuml;nnikuup&auml;ev</label>
+
+			<div class="controls">
+				<input type="text" id="birthDate" name="birthDate" ng-model="customer.birthDate">
+				<span class="help-inline" ng-show="errorMessages.birthDate" ng-bind="errorMessages.birthDate"></span>
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<button ng-click="save(customer)" type="submit" class="btn btn-primary">Salvesta</button>
+		</div>
+	</form>
+</div>
+<div ng-show="currentTab.type == 'address'">
+
+	<a ng-click="navigateAddAddress()" class="btn btn-primary">Lisa uus aadress</a>
+
+	<table class="table table-condensed">
+		<caption>P&otilde;hiaadress</caption>
+		<tbody>
+		<tr>
+			<th>Maakond</th>
+			<td ng-bind="primaryAddress.county"></td>
+		</tr>
+		<tr>
+			<th>Linn</th>
+			<td ng-bind="primaryAddress.townCounty"></td>
+		</tr>
+		<tr>
+			<th>Address</th>
+			<td>asdfasd</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<table class="table table-condensed">
+		<thead>
+		<tr>
+			<th>Maakond</th>
+			<th>Linn</th>
+			<th>Address</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr ng-repeat="address in customer.addresses">
+			<td ng-bind="address.county"></td>
+			<td ng-bind="address.townCounty"></td>
+			<td ng-bind="formatAddress(address)"></td>
+			<td>
+				<button class="btn" ng-click="setPrimaryAddress(address)" ng-show="address.addressType != 'Primary'">M&auml;&auml;ra
+					primaarseks
+				</button>
+				<button class="btn" ng-click="editAddress(address)">Muuda</button>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<div ng-show="currentTab.type == 'groups'">
+	<table class="table table-condensed">
+		<thead>
+		<tr>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr ng-repeat="group in groupList">
+			<td style="width:1%; padding-right: 10px;">
+				<input type="checkbox" ng-model="group.isSelected" ng-change="toggleGroup(group)">
+			</td>
+			<td ng-bind="group.name"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<div class="control-group">
+					<input type="text" ng-model="newGroup.name"/>
+					<button class="btn" ng-click="addGroup(newGroup)">Lisa</button>
+				</div>
+			</td>
+			<td>
+
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<div ng-show="currentTab.type == 'devices'">
+	<button class="btn btn-primary" ng-click="navigateAdd('device', customer.id)">Lisa uus sideseade</button>
+
+	<table class="table table-condensed">
+		<thead>
+		<tr>
+			<th>Liik</th>
+			<th>Informatsioon</th>
+			<th>Järjekord</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr ng-repeat="device in customer.devices">
+			<td ng-bind="device.type.name"></td>
+			<td ng-bind="device.valueText"></td>
+			<td ng-bind="device.orderBy"></td>
+			<td>
+				<button class="btn" ng-click="navigateEdit('device', device.id)">Muuda</button>
+				<button class="btn btn-danger" ng-click="delete('device', device.id, deleteCallback)">Kustuta</button>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>

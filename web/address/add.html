@@ -1,0 +1,95 @@
+<form class="form-horizontal">
+	<div ng-class="getFormFieldClass('zip', address, errorMessages)">
+		<label class="control-label" for="zip">Postiindeks</label>
+
+		<div class="controls">
+			<input type="text" id="zip" name="zip" ng-model="address.zip">
+			<span class="help-inline" ng-show="errorMessages.zip" ng-bind="errorMessages.zip"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('house', address, errorMessages)">
+		<label class="control-label" for="house">Maja</label>
+
+		<div class="controls">
+			<input type="text" id="house" name="house" ng-model="address.house">
+			<span class="help-inline" ng-show="errorMessages.house" ng-bind="errorMessages.house"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('address', address, errorMessages)">
+		<label class="control-label" for="address">Aadress</label>
+
+		<div class="controls">
+			<input type="text" id="address" name="address" ng-model="address.address">
+			<span class="help-inline" ng-show="errorMessages.address" ng-bind="errorMessages.address"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('county', address, errorMessages)">
+		<label class="control-label" for="county">Maakond</label>
+
+		<div class="controls">
+			<input type="text" id="county" name="county" ng-model="address.county">
+			<span class="help-inline" ng-show="errorMessages.county" ng-bind="errorMessages.county"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('parish', address, errorMessages)">
+		<label class="control-label" for="parish">Vald</label>
+
+		<div class="controls">
+			<input type="text" id="parish" name="parish" ng-model="address.parish">
+			<span class="help-inline" ng-show="errorMessages.parish" ng-bind="errorMessages.parish"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('townCounty', address, errorMessages)">
+		<label class="control-label" for="townCounty">Linn</label>
+
+		<div class="controls">
+			<input type="text" id="townCounty" name="townCounty" ng-model="address.townCounty">
+			<span class="help-inline" ng-show="errorMessages.townCounty" ng-bind="errorMessages.townCounty"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('phone', address, errorMessages)">
+		<label class="control-label" for="phone">Telefon</label>
+
+		<div class="controls">
+			<input type="text" id="phone" name="phone" ng-model="address.phone">
+			<span class="help-inline" ng-show="errorMessages.phone" ng-bind="errorMessages.phone"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('sms', address, errorMessages)">
+		<label class="control-label" for="sms">SMS</label>
+
+		<div class="controls">
+			<input type="text" id="sms" name="sms" ng-model="address.sms">
+			<span class="help-inline" ng-show="errorMessages.sms" ng-bind="errorMessages.sms"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('mobile', address, errorMessages)">
+		<label class="control-label" for="mobile">Mobiil</label>
+
+		<div class="controls">
+			<input type="text" id="mobile" name="mobile" ng-model="address.mobile">
+			<span class="help-inline" ng-show="errorMessages.mobile" ng-bind="errorMessages.mobile"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('email', address, errorMessages)">
+		<label class="control-label" for="email">Email</label>
+
+		<div class="controls">
+			<input type="email" id="email" name="email" ng-model="address.email">
+			<span class="help-inline" ng-show="errorMessages.email" ng-bind="errorMessages.email"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('note', address, errorMessages)">
+		<label class="control-label" for="note">M&auml;rkus</label>
+
+		<div class="controls">
+			<input type="text" id="note" name="note" ng-model="address.note">
+			<span class="help-inline" ng-show="errorMessages.note" ng-bind="errorMessages.note"></span>
+		</div>
+	</div>
+
+	<div class="form-actions">
+		<a ng-click="save(address)" type="submit" class="btn btn-primary">Salvesta</a>
+		<a ng-click="navigateCancel()" class="btn">Katkesta</a>
+	</div>
+</form>

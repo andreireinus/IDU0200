@@ -6,7 +6,6 @@ import idu0200.kliendid.model.GroupDefinition;
 import java.util.Map;
 
 public class CustomerGroupDefinitionValidator extends Validator<GroupDefinition> {
-    @Override
     public ValidationResult validate(Map<String, String[]> input, ValidationResult<GroupDefinition> result) {
         if (!input.containsKey("name")) {
             result.add("name", "Nimi on puudu");

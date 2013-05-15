@@ -8,7 +8,7 @@ public class ValidationResult<T> {
 
     public T resultObject;
     private Class<T> classInfo;
-    private HashMap<String, List<String>> messages;
+    public HashMap<String, String> messages;
     private List<Throwable> exceptions;
 
     public ValidationResult(T object) {
@@ -19,33 +19,25 @@ public class ValidationResult<T> {
 
     public void add(String key, String message) {
         if (!messages.containsKey(key)) {
-            messages.put(key, new ArrayList<String>());
+            messages.put(key, message);
+
+            return;
         }
-        messages.get(key).add(message);
+
+        String value = messages.get(key) + " " + message;
+        messages.put(key, value);
     }
 
     public boolean isValid() {
         return (messages.size() == 0) && (exceptions.size() == 0);
     }
 
-    public void addException(Throwable e) {
-        exceptions.add(e);
+    public HashMap<String, String> getMessages() {
+        return messages;
     }
 
-    public String renderInlineHelp(String key) {
-        StringBuilder sb = new StringBuilder();
-
-        if (messages.containsKey(key)) {
-            sb.append("<span class='help-inline'>");
-            for (String message : messages.get(key)) {
-                sb.append("<p>");
-                sb.append(message);
-                sb.append("</p>");
-            }
-            sb.append("</span>");
-        }
-
-        return sb.toString();
+    public void addException(Throwable e) {
+        exceptions.add(e);
     }
 
     public String renderExceptionList() {
@@ -81,18 +73,4 @@ public class ValidationResult<T> {
         return false;
     }
 
-    public String getErrorMessage(String key) {
-        StringBuilder sb = new StringBuilder();
-
-        if (!messages.containsKey(key)) {
-            return sb.toString();
-        }
-
-        for (String message : messages.get(key)) {
-            sb.append(message);
-            sb.append("<br />");
-        }
-
-        return sb.toString();
-    }
 }

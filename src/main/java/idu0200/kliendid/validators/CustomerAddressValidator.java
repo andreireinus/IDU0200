@@ -3,86 +3,74 @@ package idu0200.kliendid.validators;
 import idu0200.kliendid.common.ValidationResult;
 import idu0200.kliendid.model.CustomerAddress;
 
-import java.util.Map;
+import java.util.HashMap;
 
 public class CustomerAddressValidator extends Validator<CustomerAddress> {
 
     @Override
-    public ValidationResult validate(Map<String, String[]> input, ValidationResult<CustomerAddress> result) {
+    public ValidationResult<CustomerAddress> validate(HashMap<String, Object> input, CustomerAddress object) {
+        ValidationResult<CustomerAddress> result = new ValidationResult<CustomerAddress>(object);
 
         if (input.containsKey("zip")) {
-            result.resultObject.setZip(getValueString(input, "zip"));
-        } else {
-            result.add("zip", "Sisestamata");
+            object.setZip(String.valueOf(input.get("zip")));
         }
-
         if (input.containsKey("house")) {
-            if (tryParseInteger(getValueString(input, "house"))) {
-                result.resultObject.setHouse(getValueString(input, "house"));
-            } else {
-                result.add("house", "Majanumber pole numbrid");
-            }
-
-        } else {
-            result.add("house", "Sisestamata");
+            object.setHouse(String.valueOf(input.get("house")));
         }
-
-        if (input.containsKey("address")) {
-            result.resultObject.setAddress(getValueString(input, "address"));
-        } else {
-            result.add("address", "Sisestamata");
-        }
-
-        if (input.containsKey("county")) {
-            result.resultObject.setCounty(getValueString(input, "county"));
-        } else {
-            result.add("county", "Sisestamata");
-        }
-
-        if (input.containsKey("parish")) {
-            result.resultObject.setParish(getValueString(input, "parish"));
-        } else {
-            result.add("parish", "Sisestamata");
-        }
-
-        if (input.containsKey("town_county")) {
-            result.resultObject.setTownCounty(getValueString(input, "town_county"));
-        } else {
-            result.add("town_county", "Sisestamata");
-        }
-
-        if (input.containsKey("phone")) {
-            result.resultObject.setPhone(getValueString(input, "phone"));
-        } else {
-            result.add("phone", "Sisestamata");
-        }
-
-        if (input.containsKey("email")) {
-            result.resultObject.setEmail(getValueString(input, "email"));
-        } else {
-            result.add("email", "Sisestamata");
-        }
-
-
-        if (input.containsKey("sms")) {
-            result.resultObject.setSms(getValueString(input, "sms"));
-        } else {
-            result.add("sms", "Sisestamata");
-        }
-
-        if (input.containsKey("mobile")) {
-            result.resultObject.setMobile(getValueString(input, "mobile"));
-        } else {
-            result.add("mobile", "Sisestamata");
-        }
-
         if (input.containsKey("note")) {
-            result.resultObject.setNote(getValueString(input, "note"));
-        } else {
-            result.add("note", "Sisestamata");
+            object.setNote(String.valueOf(input.get("note")));
         }
+        if (input.containsKey("mobile")) {
+            object.setMobile(String.valueOf(input.get("mobile")));
+        }
+        if (input.containsKey("sms")) {
+            object.setSms(String.valueOf(input.get("sms")));
+        }
+        if (input.containsKey("email")) {
+            object.setEmail(String.valueOf(input.get("email")));
+        }
+        if (input.containsKey("townCounty")) {
+            object.setTownCounty(String.valueOf(input.get("townCounty")));
+        }
+        if (input.containsKey("parish")) {
+            object.setParish(String.valueOf(input.get("parish")));
+        }
+        if (input.containsKey("county")) {
+            object.setCounty(String.valueOf(input.get("county")));
+        }
+        if (input.containsKey("address")) {
+            object.setAddress(String.valueOf(input.get("address")));
+        }
+        if (input.containsKey("house")) {
+            object.setSms(String.valueOf(input.get("house")));
+        }
+
+
+        //
+
+
+        if (object.getAddress() == null || object.getAddress().length() == 0) {
+            result.add("address", "Aadress sisestamata");
+        }
+        if (object.getCounty() == null || object.getCounty().length() == 0) {
+            result.add("county", "Vald sisestamata");
+        }
+        if (object.getTownCounty() == null || object.getTownCounty().length() == 0) {
+            result.add("townCounty", "Linn sisestamata");
+        }
+        if (object.getEmail() == null || object.getEmail().length() == 0) {
+            result.add("email", "Email sisestamata");
+        }
+        if (object.getSms() == null || object.getSms().length() == 0) {
+            result.add("sms", "SMSi number sisestamata");
+        }
+        if (object.getMobile() == null || object.getMobile().length() == 0) {
+            result.add("mobile", "Mobiil sisestamta");
+        }
+        if (object.getNote() == null || object.getNote().length() == 0) {
+            result.add("note", "Märkus sisestamata");
+        }
+
         return result;
     }
-
-
 }

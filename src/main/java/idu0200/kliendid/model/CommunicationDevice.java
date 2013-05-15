@@ -9,8 +9,9 @@ public class CommunicationDevice {
 
     private long id;
 
-    @Column(name = "comm_device", nullable = false, insertable = true, updatable = true, length = 30, precision = 0)
     @Id
+    @Column(name = "comm_device", nullable = false, insertable = true, updatable = true, length = 30, precision = 0)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
     }

@@ -1,249 +1,429 @@
 angular.module('App', []).
 	config(function ($routeProvider, $locationProvider) {
-		$locationProvider.html5Mode(true);
+		$locationProvider.html5Mode(false);
 
 		$routeProvider
-			.when("/", { controller: 'CustomerList', templateUrl:'customer/list.html'})
-			.when("/customers", { controller: 'CustomerList', templateUrl:'customer/list.html'})
-			.otherwise({redirectTo: '/'});
+			.when("/", { controller: 'CustomerList', templateUrl: 'customer/list.html'})
+			.when("/add/customer", { controller: 'CustomerAdd', templateUrl: 'customer/add.html'})
+			.when("/add/address/:customerId", { controller: 'AddressAdd', templateUrl: 'address/add.html'})
+			.when("/add/device/:customerId", { controller: 'DeviceAdd', templateUrl: 'device/form.html'})
+			.when("/edit/address/:id", { controller: 'AddressEdit', templateUrl: 'address/add.html'})
+			.when("/edit/device/:id", { controller: 'DeviceEdit', templateUrl: 'device/form.html'})
+			.when("/customer", { controller: 'CustomerList', templateUrl: 'customer/list.html'})
+			.when("/customer/:id", { controller: 'Customer', templateUrl: 'customer/view.html'})
+			.when("/customer/:id/:tab", { controller: 'Customer', templateUrl: 'customer/view.html'})
+			.when("/auth", { controller: 'Auth', templateUrl: 'auth/login.html'})
+			.otherwise({redirectTo: '/auth'});
 	}).
-	controller('Main', function($scope, $location){
-		console.log("main");
-	}).
-	controller('CustomerList', function($scope){
-		console.log("CustomerList");
-	}).
-//	controller('CustomerList',function ($scope, $location, CurrentObjectId, CustomersData) {
-//		console.log("customerList", CurrentObjectId);
-//
-//		$scope.navigateCustomer = function (customer) {
-//			window.location.href = "r?c=customer&a=view&id=" + customer.id;
-//		};
-//		CustomersData.getByGroupDefinitionId(CurrentObjectId, function (data) {
-//			console.log(data);
-//			$scope.customers = data;
-//		});
-//	}).
-//	controller('CustomerView',function ($scope, $location, CurrentObjectId, CustomersData, DevicesData) {
-//		$scope.tabItems = [
-//			{type: 'customerMain', text: 'Põhiandmed', active: false, visible: true},
-//			{type: 'addressList', text: 'Aadressid', active: true, visible: true},
-//			{type: 'groupsList', text: 'Grupid', active: false, visible: true},
-//			{type: 'devicesList', text: 'Sidevahendid', active: false, visible: true},
-//			{type: 'groupsAdd', active: true, visible: false}
-//		];
-//
-//		$scope.openDialog = function(options, callback) {
-//			var dialog = $dialog.dialog(options);
-//			dialog.open().then(callback);
-//		};
-//
-//		// Set CSS
-//		$scope.getTabCssClass = function (item) {
-//			var css = [];
-//			if ($scope.currentTab.type == item.type) {
-//				css.push('active');
-//			}
-//			return css;
-//		};
-//		$scope.setActiveTab = function (item) {
-//			for (var i = 0; i < $scope.tabItems.length; i++) {
-//				$scope.tabItems[i].active = false;
-//			}
-//
-//			$scope.currentTab = item;
-//			item.active = true;
-//		};
-//		$scope.setActiveTab($scope.tabItems[1]);
-//
-//		/// Devices
-//		DevicesData.getDeviceTypeList(function (data) {
-//			$scope.deviceTypes = data;
-//		});
-//
-//		$scope.loadDeviceList = function() {
-//			DevicesData.getCustomerDevices(CurrentObjectId, function (data) {
-//				for (var i = 0; i < data.length; i++) {
-//					data[i]['$inEditMode'] = false;
-//					data[i]['$isNew'] = false;
-//				}
-//				$scope.devices = data;
-//			});
-//		};
-//		$scope.addNewDevice = function () {
-//			window.location.href = "r?c=devices&a=add&customerId=" + CurrentObjectId;
-//		};
-//		$scope.updateDevice = function (device) {
-//			console.log(device);
-//			window.location.href = "r?c=devices&a=change&id="+device.id+"&customerId=" + CurrentObjectId;
-//		};
-//		$scope.loadDeviceList();
-//
-//		// Groups
-//		$scope.newGroup = {
-//			name: ''
-//		};
-//		$scope.loadGroupsList = function() {
-//			CustomersData.getGroupDefinitionList(function(data) {
-//				for (var i = 0; i < data.length; i++) {
-//					data[i].isSelected = false;
-//				}
-//				$scope.groupDefinitionList = data;
-//				CustomersData.getGroupsList(CurrentObjectId, function (data) {
-//					console.log(data);
-//					for (var i = 0; i < $scope.groupDefinitionList.length; i++) {
-//
-//						for (var j = 0; j < data.length; j++) {
-//							if (data[j].definition.id == $scope.groupDefinitionList[i].id) {
-//								$scope.groupDefinitionList[i].isSelected = true;
-//								break;
-//							}
-//						}
-//					}
-//				});
-//			});
-//		};
-//		$scope.changeGroup = function(group) {
-//			CustomersData.toggleCustomerGroup(CurrentObjectId, group.id, function(){
-//				$scope.loadGroupsList();
-//			});
-//		};
-//		$scope.addGroup = function(group) {
-//			CustomersData.addGroup(CurrentObjectId, group.name, function() {
-//				$scope.newGroup.name = ''
-//				$scope.loadGroupsList();
-//			});
-//		};
-//		$scope.loadGroupsList();
-//
-//		// Addresses
-//		$scope.loadAddresses = function() {
-//			CustomersData.getAddressList(CurrentObjectId, function(data) {
-//				$scope.primaryAddress = data[0];
-//				$scope.addresses = data[1];
-//			});
-//		};
-//		$scope.formatAddress = function(address) {
-//			if (address == null || typeof(address) == "undefined") {
-//				return "";
-//			}
-//			return address.address + " " + address.house + ", " + address.county + ", " + address.zip;
-//		};
-//		$scope.setPrimaryAddress = function(address) {
-//			CustomersData.setPrimaryAddress(CurrentObjectId, address.id, function(data){
-//				$scope.primaryAddress = data[0];
-//				$scope.addresses = data[1];
-//			});
-//		};
-//		$scope.openAddressChange = function(address) {
-//			window.location.href = "r?c=other&a=chgAddress&id=" + address.id;
-//
-//		};
-//		$scope.loadAddresses();
-//
-//
-//
-//
-//
-//	}).
-	factory('CustomersData',function ($http) {
-		return {
-			post: function (params, callback) {
-				return $http.post("ajax", params).success(function (data) {
-					callback(data);
-				});
-			},
-			getByType: function (type, value, callback) {
-				var params = {
-					'c': 'customers',
-					'f': type,
-					'v': value
-				};
-				return $http.post("ajax", params).success(function (data) {
-					return typeof callback === "function" ? callback(data) : void 0;
-				})
-			},
-			getByGroupDefinitionId: function (definitionId, callback) {
-				return this.getByType('group', definitionId, callback);
-			},
-			getGroupDefinitionList: function (callback) {
-				var params = {
-					c: 'groups',
-					f: 'groupsList'
-				};
-				return this.post(params, callback);
-			},
-			getGroupsList: function (id, callback) {
-				var params = {
-					c: 'groups',
-					f: 'customerGroups',
-					v: id
-				};
-
-				return this.post(params, callback);
-			},
-			toggleCustomerGroup: function (customerId, groupId, callback) {
-				var params = {
-					c: 'groups',
-					f: 'toggleGroup',
-					v: customerId,
-					g: groupId
-				};
-				return this.post(params, callback);
-			},
-			addGroup: function(customerId, name, callback) {
-				var params = {
-					c: 'groups',
-					f: 'addGroup',
-					v: customerId,
-					n: name
-				};
-				return this.post(params, callback);
-			},
-			getAddressList: function(customerId, callback) {
-				var params = {
-					c: 'address',
-					f: 'addressList',
-					v: customerId
-				};
-				return this.post(params, callback);
-			},
-			setPrimaryAddress: function(customerId, addressId, callback) {
-				var params = {
-					c: 'address',
-					f: 'setPrimary',
-					v: customerId,
-					a: addressId
-				};
-				return this.post(params, callback);
-
+	controller('Main',function ($scope, $location, UserData, CustomerData, DevicesData, AddressData) {
+		$scope.requireLogin = function () {
+			UserData.isLoggedIn(function (result) {
+				if (!result || result == "false") {
+					console.log("isLoggedIn", result);
+					$location.url("auth");
+				}
+			});
+		};
+		$scope.logout = function () {
+			UserData.logout(function () {
+				$scope.User = null;
+				$scope.requireLogin();
+			});
+		};
+		$scope.getFormFieldClass = function (fieldId, object, errors) {
+			var css = ["control-group"];
+			if (errors != null && errors[fieldId]) {
+				css.push("error")
+			}
+			return css;
+		};
+		$scope.delete = function (type, id, callback) {
+			if (!confirm("Kindel?")) {
+				return;
 			}
 
+			if (type == 'customer') {
+				CustomerData.delete(id, callback);
+			} else if (type == 'device') {
+				DevicesData.delete(id, callback);
+			} else if (type == 'address') {
+				AddressData.delete(id, callback);
+			}
+		};
+	}).
+	controller('Auth',function ($scope, $rootScope, $location, UserData) {
+		$scope.user = {
+			username: 'andrei',
+			password: 'suva'
+		};
+
+		$scope.authUser = function (user) {
+			$scope.user = angular.copy(user);
+
+			UserData.auth(user, function (result) {
+				if (!result.isError) {
+					$rootScope.User = result;
+					$location.url("customer");
+					return;
+				}
+			});
+		};
+	}).
+	controller('CustomerList',function ($scope, $location, CustomerData) {
+		$scope.requireLogin();
+
+		$scope.navigateAddForm = function (customer) {
+			$location.url("add/customer");
+		};
+
+		$scope.navigateView = function (customer) {
+			$location.url("customer/" + customer.id);
+		};
+
+		CustomerData.list(function (result) {
+			$scope.Customers = result;
+		});
+
+	}).
+	controller('CustomerAdd',function ($scope, $location, CustomerData) {
+		$scope.requireLogin();
+
+		$scope.customer = {
+			firstName: '',
+			lastName: '',
+			identityCode: '',
+			birthDate: ''
+		};
+		$scope.errorMessages = {};
+
+		$scope.cancel = function () {
+			$location.url("customer");
+		};
+		$scope.save = function (customer) {
+			$scope.customer = angular.copy(customer);
+
+			CustomerData.add(customer, function (result) {
+				if (!result.valid) {
+					$scope.errorMessages = result.messages;
+					console.log(result);
+					return;
+				}
+			});
+		};
+	}).
+	controller('AddressAdd',function ($scope, $routeParams, $location, AddressData) {
+		$scope.requireLogin();
+
+		$scope.address = {
+			customerId: $routeParams.customerId
+		};
+
+		$scope.save = function (address) {
+			$scope.address = angular.copy(address);
+			AddressData.add(address, function (result) {
+				if (typeof result.valid == "undefined") {
+					$scope.navigateCancel();
+					return;
+				}
+				$scope.errorMessages = result.messages;
+				console.log(result);
+			});
+		};
+		$scope.navigateCancel = function () {
+			$location.url("customer/" + $routeParams.customerId + "/address");
+		};
+
+		console.log($routeParams);
+	}).
+	controller('AddressEdit',function ($scope, $routeParams, $location, AddressData) {
+		$scope.requireLogin();
+
+		$scope.address = null;
+		AddressData.getById($routeParams.id, function (result) {
+			$scope.address = result;
+		});
+
+		$scope.save = function (address) {
+			$scope.address = angular.copy(address);
+			AddressData.update(address, function (result) {
+				if (typeof result.valid == "undefined") {
+					$scope.navigateCancel();
+					return;
+				}
+				$scope.errorMessages = result.messages;
+			});
+		};
+		$scope.navigateCancel = function () {
+			$location.url("customer/" + $scope.address.customer.id + "/address");
+		};
+	}).
+	controller('DeviceAdd',function ($scope, $routeParams, $location, DevicesData) {
+		$scope.requireLogin();
+
+		$scope.device = {
+			customerId: $routeParams.customerId
+		};
+
+		$scope.deviceTypes = [];
+		DevicesData.getTypes(function (result) {
+			$scope.deviceTypes = result;
+			$scope.device.type = result[0];
+		});
+
+		$scope.navigateCancel = function () {
+			$location.url("customer/" + $routeParams.customerId + "/devices");
+		};
+
+		$scope.save = function (device) {
+			$scope.device = angular.copy(device);
+			device.typeId = device.type.id;
+			DevicesData.add(device, function (result) {
+				if (typeof result.valid == "undefined") {
+					$scope.navigateCancel();
+					return;
+				}
+				$scope.errorMessages = result.messages;
+			});
+		};
+	}).
+	controller('DeviceEdit',function ($scope, $routeParams, $location, DevicesData) {
+		$scope.requireLogin();
+
+		$scope.device = null;
+		$scope.deviceTypes = [];
+		DevicesData.getTypes(function (result) {
+			$scope.deviceTypes = result;
+			DevicesData.getById($routeParams.id, function (result) {
+				$scope.device = result;
+			});
+		});
+
+		$scope.save = function (device) {
+			$scope.device = angular.copy(device);
+			device.typeId = device.type.id;
+			DevicesData.update(device, function (result) {
+				if (typeof result.valid == "undefined") {
+					$scope.navigateCancel();
+					return;
+				}
+				$scope.errorMessages = result.messages;
+			});
+		};
+
+		$scope.navigateCancel = function () {
+			$location.url("customer/" + $scope.device.customer.id + "/devices");
+		};
+	}).
+	controller('Customer',function ($scope, $routeParams, $location, CustomerData, GroupData, AddressData) {
+		$scope.requireLogin();
+
+		$scope.customer = {};
+		$scope.tabItems = [
+			{type: 'main', text: 'P&otilde;hiandmed', active: true, visible: true},
+			{type: 'address', text: 'Aadressid', active: false, visible: true},
+			{type: 'groups', text: 'Grupid', active: false, visible: true},
+			{type: 'devices', text: 'Sidevahendid', active: false, visible: true}
+		];
+		$scope.id = $routeParams.id;
+		$scope.tab = $scope.tabItems[0].type;
+		if ($routeParams.tab) {
+			$scope.tab = $routeParams.tab;
+		}
+		for (var i = 0; i < $scope.tabItems.length; i++) {
+			var item = $scope.tabItems[i];
+			if (item.type == $scope.tab) {
+				$scope.currentTab = item;
+				$scope.tab = item.type;
+				break;
+			}
+		}
+
+		$scope.setActiveTab = function (tab) {
+			$location.url("customer/" + $scope.id + "/" + tab.type);
+		};
+		$scope.reloadData = function () {
+			CustomerData.getById($scope.id, function (result) {
+				$scope.customer = result;
+				console.log(result);
+				GroupData.list(function (result) {
+					$scope.groupList = [];
+					for (var i = 0; i < result.length; i++) {
+						var item = result[i];
+						item.isSelected = false;
+						item.groupId = -1;
+						for (var j = 0; j < $scope.customer.groups.length; j++) {
+
+							if ($scope.customer.groups[j].definition.id == item.id) {
+								item.isSelected = true;
+								item.groupId = $scope.customer.groups[j].id;
+								break;
+							}
+						}
+						$scope.groupList.push(item);
+					}
+				});
+			});
+		};
+		$scope.reloadData();
+
+		$scope.navigateAdd = function (type, id) {
+			$location.url("add/" + type + "/" + id);
+		};
+		$scope.navigateEdit = function (type, id) {
+			$location.url("edit/" + type + "/" + id);
+		};
+
+		$scope.save = function (customer) {
+			CustomerData.update(customer, function (result) {
+				$scope.errorMessages = {};
+				if (!result.valid) {
+					$scope.errorMessages = result.messages;
+				}
+			});
+		};
+
+		$scope.deleteCallback = function (success) {
+			if (success) {
+				$scope.reloadData();
+			}
+		};
+
+
+		$scope.toggleGroup = function (group) {
+			if (!group.isSelected) {
+				GroupData.remove(group.groupId, function (result) {
+					group.isSelected = false;
+					group.groupId = -1;
+				})
+			} else {
+				var params = {
+					id: group.id,
+					customerId: $scope.customer.id
+				};
+				GroupData.add(params, function (result) {
+					console.log(result);
+				});
+			}
+			return true;
+		};
+		$scope.setPrimaryAddress = function (address) {
+			for (var i = 0; i < $scope.customer.addresses.length; i++) {
+				var a = $scope.customer.addresses[i];
+				a.addressType = (a.id == address.id) ? 'Primary' : 'Additional';
+			}
+			AddressData.setPrimaryAddress(address.id, function (result) {
+				console.log(address, result);
+			});
+		};
+
+	}).
+	factory('UserData',function ($http) {
+		return {
+			post: function (action, params, callback) {
+				params.a = action
+				return $http.post("api/user", params).success(function (result) {
+					callback(result);
+				});
+			},
+			isLoggedIn: function (callback) {
+				return this.post('isLoggedIn', {}, callback);
+			},
+			auth: function (user, callback) {
+				return this.post('auth', user, callback);
+			},
+			logout: function (callback) {
+				return this.post('logout', {}, callback);
+			}
+		};
+	}).
+	factory('GroupData',function ($http) {
+		return {
+			post: function (action, params, callback) {
+				params.a = action
+				return $http.post("api/groups", params).success(function (result) {
+					callback(result);
+				});
+			},
+			list: function (callback) {
+				return this.post('list', {}, callback);
+			},
+			remove: function (id, callback) {
+				return this.post('remove', {id: id}, callback);
+			},
+			add: function (params, callback) {
+				return this.post('add', params, callback);
+			}
+		};
+	}).
+	factory('AddressData',function ($http) {
+		return {
+			post: function (action, params, callback) {
+				params.a = action;
+				return $http.post("api/address", params).success(function (result) {
+					callback(result);
+				});
+			},
+			setPrimaryAddress: function (id, callback) {
+				return this.post('setPrimaryAddress', {id: id}, callback);
+			},
+			add: function (params, callback) {
+				return this.post('add', params, callback);
+			},
+			update: function (params, callback) {
+				return this.post('update', params, callback);
+			},
+			getById: function (id, callback) {
+				return this.post('getById', {id: id}, callback);
+			},
+			list: function (callback) {
+				return this.post("list", {}, callback);
+			}
+		};
+	}).
+	factory('CustomerData',function ($http) {
+		return {
+			post: function (action, params, callback) {
+				params.a = action;
+				return $http.post("api/customer", params).success(function (result) {
+					callback(result);
+				});
+			},
+			list: function (callback) {
+				return this.post("list", {}, callback);
+			},
+			getById: function (id, callback) {
+				return this.post('getById', {id: id}, callback);
+			},
+			add: function (params, callback) {
+				return this.post("add", params, callback);
+			},
+			update: function (params, callback) {
+				return this.post("update", params, callback);
+			}
 		};
 	}).
 	factory('DevicesData', function ($http) {
 		return {
-			post: function (params, callback) {
-				return $http.post("ajax", params).success(function (data) {
+			post: function (action, params, callback) {
+				params.a = action;
+				return $http.post("api/devices", params).success(function (data) {
 					callback(data);
 				});
 			},
-			update: function(device, callback) {
-				var params = {
-					c: 'devices',
-					f: 'update',
-					id: device.id,
-					typeId: device.type.id,
-					valueText: device.valueText,
-					orderBy: device.orderBy
-				};
-				return this.post({c: 'devices', f: 'update', o: device}, callback);
+			add: function (device, callback) {
+				return this.post('add', device, callback);
 			},
-			getDeviceTypeList: function (callback) {
-				return this.post({ c: 'devices', f: 'typeList' }, callback);
+			update: function (device, callback) {
+				return this.post('update', device, callback);
 			},
-			getCustomerDevices: function (id, callback) {
-				return this.post({ c: 'devices', f: 'customerList', v: id }, callback);
+			getById: function (id, callback) {
+				return this.post('getById', {id: id}, callback);
+			},
+			delete: function (id, callback) {
+				return this.post('delete', {id: id}, callback);
+			},
+			getTypes: function (callback) {
+				return this.post('getTypes', {}, callback);
 			}
 		};
 	});

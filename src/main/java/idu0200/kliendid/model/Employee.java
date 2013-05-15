@@ -1,7 +1,10 @@
 package idu0200.kliendid.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee")
@@ -44,14 +47,15 @@ public class Employee {
     }
 
     ///
-    private List<EmployeeUser> employeeUsers;
+    private Set<EmployeeUser> employeeUsers;
 
     @OneToMany(mappedBy = "employee")
-    public List<EmployeeUser> getEmployeeUsers() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public Set<EmployeeUser> getEmployeeUsers() {
         return employeeUsers;
     }
 
-    public void setEmployeeUsers(List<EmployeeUser> employeeUsers) {
+    public void setEmployeeUsers(Set<EmployeeUser> employeeUsers) {
         this.employeeUsers = employeeUsers;
     }
 

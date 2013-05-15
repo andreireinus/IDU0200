@@ -1,0 +1,40 @@
+<form class="form-horizontal">
+	<div ng-class="getFormFieldClass('firstName', customer, errorMessages)">
+		<label class="control-label" for="firstName">Eesnimi</label>
+
+		<div class="controls">
+			<input type="text" id="firstName" name="firstName" ng-model="customer.firstName">
+			<span class="help-inline" ng-show="errorMessages.firstName" ng-bind="errorMessages.firstName"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('lastName', customer, errorMessages)">
+		<label class="control-label" for="lastName">Perenimi</label>
+
+		<div class="controls">
+			<input type="text" id="lastName" name="lastName" ng-model="customer.lastName">
+			<span class="help-inline" ng-show="errorMessages.lastName" ng-bind="errorMessages.lastName"></span>
+
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('identityCode', customer, errorMessages)">
+		<label class="control-label" for="identityCode">Isikukood</label>
+
+		<div class="controls">
+			<input type="text" id="identityCode" name="identityCode" ng-model="customer.identityCode">
+			<span class="help-inline" ng-show="errorMessages.identityCode" ng-bind="errorMessages.identityCode"></span>
+		</div>
+	</div>
+	<div ng-class="getFormFieldClass('birthDate', customer, errorMessages)">
+		<label class="control-label" for="birthDate">S&uuml;nnikuup&auml;ev</label>
+
+		<div class="controls">
+			<input type="text" id="birthDate" name="birthDate" ng-model="customer.birthDate">
+			<span class="help-inline" ng-show="errorMessages.birthDate" ng-bind="errorMessages.birthDate"></span>
+		</div>
+	</div>
+
+	<div class="form-actions">
+		<button ng-click="save(customer)" type="submit" class="btn btn-primary">Salvesta</button>
+		<a ng-click="cancel()" class="btn">Katkesta</a>
+	</div>
+</form>

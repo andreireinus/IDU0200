@@ -2,8 +2,8 @@ package idu0200.kliendid.controllers;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
-import idu0200.kliendid.common.AjaxRequestVariables;
-import idu0200.kliendid.common.AjaxResponse;
+import idu0200.kliendid.common.AjaxRequest;
+import idu0200.kliendid.common.AjaxErrorResponse;
 import idu0200.kliendid.dao.*;
 import idu0200.kliendid.model.*;
 
@@ -28,73 +28,75 @@ public class AjaxController extends XControllerBase {
         ensureSession(request);
         response.setContentType("application/json");
 
-        AjaxRequestVariables variables = parseVariables(request);
-        if (variables.getCommand() == null) {
-            emptyResponse(request, response);
-        }
-
-        if (variables.getCommand().equals("customers")) {
-            handleCustomer(variables.getFormat(), request, response);
-        } else if (variables.getCommand().equals("devices")) {
-            handleDevices(variables, request, response);
-        } else if (variables.getCommand().equals("groups")) {
-            handleGroups(variables, request, response);
-        } else if (variables.getCommand().equals("address")) {
-            handleAddress(variables, request, response);
-        }
+        AjaxRequest variables = parseVariables(request);
+//        if (variables.getController() == null) {
+//            emptyResponse(request, response);
+//        }
+//
+//        if (variables.getController().equals("customers")) {
+//            handleCustomer(variables.getAction(), request, response);
+//        } else if (variables.getController().equals("devices")) {
+//            handleDevices(variables, request, response);
+//        } else if (variables.getController().equals("groups")) {
+//            handleGroups(variables, request, response);
+//        } else if (variables.getController().equals("address")) {
+//            handleAddress(variables, request, response);
+//        }
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         doGet(request, response);
     }
 
-    private void handleAddress(AjaxRequestVariables vars, HttpServletRequest request, HttpServletResponse response) {
+    private void handleAddress(AjaxRequest vars, HttpServletRequest request, HttpServletResponse response) {
         EntityManager em = getEntityManager();
         CustomerDao db = new CustomerDao(em);
         CustomerAddressDao dbAddress = new CustomerAddressDao(em);
 
-        if (vars.getFormat().equals("addressList")) {
+        if (vars.getAction().equals("addressList")) {
             sendCustomerAddressList(vars, response, db);
-        } else if (vars.getFormat().equals("setPrimary")) {
+        } else if (vars.getAction().equals("setPrimary")) {
             Customer customer = db.getById(vars.getId());
-            CustomerAddress address = dbAddress.getById((Long) vars.getValues().get("a"));
-            customer.setPrimaryAddress(address);
+//            CustomerAddress address = dbAddress.getById((Long) vars.getValues().get("a"));
+//            customer.setPrimaryAddress(address);
 
             sendCustomerAddressList(vars, response, db);
         }
         em.close();
     }
 
-    private void handleGroups(AjaxRequestVariables vars, HttpServletRequest request, HttpServletResponse response) {
+
+
+    private void handleGroups(AjaxRequest vars, HttpServletRequest request, HttpServletResponse response) {
         EntityManager em = getEntityManager();
         GroupDefinitionDao dbDefinition = new GroupDefinitionDao(em);
         CustomerDao dbCustomer = new CustomerDao(em);
 
-        if (vars.getFormat().equals("groupsList")) {
+        if (vars.getAction().equals("groupsList")) {
             writeResponse(response, dbDefinition.getGroupsList());
-        } else if (vars.getFormat().equals("customerGroups")) {
+        } else if (vars.getAction().equals("customerGroups")) {
             Customer customer = dbCustomer.getById(vars.getId());
             writeResponse(response, customer.getGroups());
-        } else if (vars.getFormat().equals("toggleGroup")) {
+        } else if (vars.getAction().equals("toggleGroup")) {
             try {
                 em.getTransaction().begin();
 
                 Customer customer = dbCustomer.getById(vars.getId());
-                GroupDefinition definition = dbDefinition.getById((Long) vars.getValues().get("g"));
+//                GroupDefinition definition = dbDefinition.getById((Long) vars.getValues().get("g"));
 
-                if (customer.inGroup(definition)) {
-                    Group group = customer.getGroup(definition);
-                    if (group != null) {
-                        em.remove(group);
-                    }
-                } else {
-                    createGroup(customer, definition);
-                }
+//                if (customer.inGroup(definition)) {
+//                    Group group = customer.getGroup(definition);
+//                    if (group != null) {
+//                        em.remove(group);
+//                    }
+//                } else {
+//                    createGroup(customer, definition);
+//                }
                 em.getTransaction().commit();
                 emptyResponse(request, response);
             } catch (Exception e) {
                 handleException(e, em, request, response);
             }
-        } else if (vars.getFormat().equals("addGroup")) {
+        } else if (vars.getAction().equals("addGroup")) {
             try {
                 em.getTransaction().begin();
 
@@ -116,18 +118,18 @@ public class AjaxController extends XControllerBase {
         em.close();
     }
 
-    private void handleDevices(AjaxRequestVariables vars, HttpServletRequest request, HttpServletResponse response) {
+    private void handleDevices(AjaxRequest vars, HttpServletRequest request, HttpServletResponse response) {
         EntityManager em = getEntityManager();
 
         CommunicationDeviceDao dbDevice = new CommunicationDeviceDao(em);
         CommunicationDeviceTypeDao dbType = new CommunicationDeviceTypeDao(em);
 
-        if (vars.getFormat().equals("customerList")) {
+        if (vars.getAction().equals("customerList")) {
             List<CommunicationDevice> list = dbDevice.getListByCustomer(vars.getId());
             writeResponse(response, list);
-        } else if (vars.getFormat().equals("typeList")) {
+        } else if (vars.getAction().equals("typeList")) {
             writeResponse(response, dbType.getList());
-        } else if (vars.getFormat().equals("update")) {
+        } else if (vars.getAction().equals("update")) {
             try {
                 em.getTransaction().begin();
                 HashMap a = (HashMap) new JSONDeserializer().deserialize(vars.getPayload());
@@ -162,16 +164,14 @@ public class AjaxController extends XControllerBase {
 
                     em.persist(device);
                 } else {
-                    AjaxResponse ajaxResponse = new AjaxResponse();
-                    ajaxResponse.errorMessage = "";
-
-                    writeResponse(response, ajaxResponse);
+                    AjaxErrorResponse ajaxErrorResponse = new AjaxErrorResponse("");
+                    writeResponse(response, ajaxErrorResponse);
                 }
 
                 em.getTransaction().commit();
-                AjaxResponse ajaxResponse = new AjaxResponse();
-                ajaxResponse.isError = false;
-                writeResponse(response, ajaxResponse);
+                AjaxErrorResponse ajaxErrorResponse = new AjaxErrorResponse("");
+                ajaxErrorResponse.isError = false;
+                writeResponse(response, ajaxErrorResponse);
             } catch (Exception e) {
                 handleException(e, em, request, response);
             }
@@ -191,7 +191,7 @@ public class AjaxController extends XControllerBase {
     }
 
 
-    private void sendCustomerAddressList(AjaxRequestVariables vars, HttpServletResponse response, CustomerDao db) {
+    private void sendCustomerAddressList(AjaxRequest vars, HttpServletResponse response, CustomerDao db) {
         Customer customer = db.getById(vars.getId());
         Object[] result = new Object[2];
         result[0] = customer.getPrimaryAddress();
@@ -217,32 +217,20 @@ public class AjaxController extends XControllerBase {
         if (em != null && em.getTransaction().isActive()) {
             em.getTransaction().rollback();
         }
-        AjaxResponse ajaxResponse = new AjaxResponse();
-        ajaxResponse.isError = true;
-        ajaxResponse.errorMessage = e.getMessage();
-        writeResponse(response, ajaxResponse);
+        AjaxErrorResponse ajaxErrorResponse = new AjaxErrorResponse(e.getMessage());
+        ajaxErrorResponse.isError = true;
+        writeResponse(response, ajaxErrorResponse);
     }
 
-    private AjaxRequestVariables parseVariables(HttpServletRequest request) {
-        AjaxRequestVariables variables = new AjaxRequestVariables("", "customers", "asdf");
+    private AjaxRequest parseVariables(HttpServletRequest request) {
+        AjaxRequest variables = new AjaxRequest("", "asdf");
 
         try {
             String payload = getPayload(request);
             HashMap<String, String> input = getPayloadVariables(payload);
             variables.setPayload(payload);
 
-            variables.setCommand(input.get("c"));
-            variables.setFormat(input.get("f"));
-
-            String idString = input.get("v");
-            if (idString != null && idString.length() > 0) {
-                try {
-                    int id = Integer.parseInt(idString);
-                    variables.setId(id);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            variables.setAction(input.get("f"));
 
             for (String key : input.keySet()) {
                 if (key.equals("c") || key.equals("f") || key.equals("v")) {
