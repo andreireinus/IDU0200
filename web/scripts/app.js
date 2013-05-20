@@ -30,6 +30,9 @@ angular.module('App', []).
 				$scope.requireLogin();
 			});
 		};
+		$scope.navigate = function(type) {
+			$location.url(type);
+		}
 		$scope.getFormFieldClass = function (fieldId, object, errors) {
 			var css = ["control-group"];
 			if (errors != null && errors[fieldId]) {
@@ -283,9 +286,7 @@ angular.module('App', []).
 		};
 
 		$scope.deleteCallback = function (success) {
-			if (success) {
-				$scope.reloadData();
-			}
+			$scope.reloadData();
 		};
 
 
@@ -352,6 +353,9 @@ angular.module('App', []).
 			},
 			add: function (params, callback) {
 				return this.post('add', params, callback);
+			},
+			getDefinitionById: function(id, callback) {
+				return this.post('getDefinitionById', {id: id}, callback);
 			}
 		};
 	}).

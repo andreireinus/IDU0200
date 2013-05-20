@@ -21,10 +21,18 @@ public class DevicesController extends ControllerBase {
     public void delete(AjaxRequest ajaxRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
         EntityManager em = getEntityManager();
 
-        CommunicationDeviceDao db = new CommunicationDeviceDao(em);
-        em.remove(db.getById(ajaxRequest.getId()));
-        writeResponse(response, true);
+        try {
+            em.getTransaction().begin();
 
+            CommunicationDeviceDao db = new CommunicationDeviceDao(em);
+            em.remove(db.getById(ajaxRequest.getId()));
+
+            em.getTransaction().commit();
+
+            writeResponse(response, true);
+        } catch (Exception e) {
+            handleException(e, em);
+        }
         em.close();
     }
 
