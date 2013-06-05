@@ -23,6 +23,9 @@ public class CustomerAddressValidator extends Validator<CustomerAddress> {
         if (input.containsKey("mobile")) {
             object.setMobile(String.valueOf(input.get("mobile")));
         }
+        if (input.containsKey("phone")) {
+            object.setPhone(String.valueOf(input.get("phone")));
+        }
         if (input.containsKey("sms")) {
             object.setSms(String.valueOf(input.get("sms")));
         }
@@ -45,32 +48,38 @@ public class CustomerAddressValidator extends Validator<CustomerAddress> {
             object.setSms(String.valueOf(input.get("house")));
         }
 
-
         //
 
-
         if (object.getAddress() == null || object.getAddress().length() == 0) {
-            result.add("address", "Aadress sisestamata");
+            result.add("address");
         }
         if (object.getCounty() == null || object.getCounty().length() == 0) {
-            result.add("county", "Vald sisestamata");
+            result.add("county");
         }
         if (object.getTownCounty() == null || object.getTownCounty().length() == 0) {
-            result.add("townCounty", "Linn sisestamata");
+            result.add("townCounty");
         }
         if (object.getEmail() == null || object.getEmail().length() == 0) {
-            result.add("email", "Email sisestamata");
+            result.add("email");
         }
         if (object.getSms() == null || object.getSms().length() == 0) {
-            result.add("sms", "SMSi number sisestamata");
+            result.add("sms");
         }
         if (object.getMobile() == null || object.getMobile().length() == 0) {
-            result.add("mobile", "Mobiil sisestamta");
+            result.add("mobile");
         }
-        if (object.getNote() == null || object.getNote().length() == 0) {
-            result.add("note", "Märkus sisestamata");
+        if (object.getZip() == null || object.getZip().length() == 0) {
+            result.add("zip");
         }
-
+        if (object.getHouse() == null || object.getHouse().length() == 0) {
+            result.add("house");
+        }
+        if (object.getParish() == null || object.getParish().length() == 0) {
+            result.add("parish");
+        }
+        if (object.getPhone() == null || object.getPhone().length() == 0) {
+            result.add("phone");
+        }
         return result;
     }
 }

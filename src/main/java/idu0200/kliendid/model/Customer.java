@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class Customer {
     private String lastName;
     private String identityCode;
     private String note;
-    private Timestamp birthDate;
+    private Date birthDate;
     private Timestamp created;
     private Timestamp updated;
     private Employee createdBy;
@@ -121,7 +122,7 @@ public class Customer {
 
     @Column(name = "birth_date", nullable = true, insertable = true, updatable = true, length = 29, precision = 6)
     @Basic
-    public Timestamp getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 

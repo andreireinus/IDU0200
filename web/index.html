@@ -14,10 +14,8 @@
 	<base href="/" />
 </head>
 <body ng-app="App">
-<div class="container" ng-controller="Main">
-	<ng-include src="'layout/navbar.html'"></ng-include>
-
-	<section ng-view />
+<div class="container">
+	<section ng-controller="Main" ng-view />
 </div>
 
 <script src="scripts/jquery.min.js"></script>

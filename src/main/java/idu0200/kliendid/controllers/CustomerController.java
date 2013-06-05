@@ -18,6 +18,7 @@ public class CustomerController extends ControllerBase {
         EntityManager em = getEntityManager();
 
         CustomerDao db = new CustomerDao(em);
+
         writeResponse(response, db.getList());
 
         em.close();
@@ -37,16 +38,22 @@ public class CustomerController extends ControllerBase {
         CustomerValidator validator = new CustomerValidator();
         ValidationResult<Customer> result = validator.validate(ajaxRequest.getValues(), customer);
 
+        EntityManager em = getEntityManager();
+
         if (result.isValid()) {
-            EntityManager em = getEntityManager();
-
-            em.persist(customer);
-            em.close();
-
-            writeResponse(response, customer);
+            try {
+                em.getTransaction().begin();
+                em.persist(customer);
+                em.getTransaction().commit();
+                writeResponse(response, customer);
+            } catch (Exception e) {
+                handleException(e, em);
+            }
         } else {
             writeResponse(response, result);
         }
+        em.close();
+
     }
 
     public void update(AjaxRequest ajaxRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {

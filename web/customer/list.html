@@ -1,3 +1,5 @@
+<ng-include src="'navbar.html'"></ng-include>
+
 <p>
 	<a class="btn btn-primary" ng-click="navigateAddForm()">Lisa uus</a>
 </p>
@@ -14,8 +16,8 @@
 	<tr ng-repeat="customer in Customers">
 		<td ng-bind="customer.firstName"></td>
 		<td ng-bind="customer.lastName"></td>
-		<td ng-bind="customer.birthDate"></td>
-		<td ng-bind="customer.updated"></td>
+		<td ng-bind="formatDate(customer.birthDate)"></td>
+		<td ng-bind="formatDate(customer.updated)"></td>
 		<td>
 			<a ng-click="navigateView(customer)" class="btn btn-small">Detail</a>
 		</td>

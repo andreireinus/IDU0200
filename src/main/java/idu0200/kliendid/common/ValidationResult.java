@@ -27,6 +27,9 @@ public class ValidationResult<T> {
         String value = messages.get(key) + " " + message;
         messages.put(key, value);
     }
+    public void add(String key) {
+        add(key, " ");
+    }
 
     public boolean isValid() {
         return (messages.size() == 0) && (exceptions.size() == 0);

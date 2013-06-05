@@ -39,6 +39,19 @@ public class GroupDefinition {
         this.name = name;
     }
 
+//    private Set<Group> groups;
+//
+//    @OneToMany
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    public Set<Group> getGroups() {
+//        return this.groups;
+//    }
+//
+//    public void setGroups(Set<Group> groups) {
+//        this.groups = groups;
+//    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

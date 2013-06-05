@@ -12,14 +12,20 @@ angular.module('App', []).
 			.when("/customer", { controller: 'CustomerList', templateUrl: 'customer/list.html'})
 			.when("/customer/:id", { controller: 'Customer', templateUrl: 'customer/view.html'})
 			.when("/customer/:id/:tab", { controller: 'Customer', templateUrl: 'customer/view.html'})
+			.when("/clipboard", { controller: 'Clipboard', templateUrl: 'clipboard.html'})
 			.when("/auth", { controller: 'Auth', templateUrl: 'auth/login.html'})
 			.otherwise({redirectTo: '/auth'});
 	}).
-	controller('Main',function ($scope, $location, UserData, CustomerData, DevicesData, AddressData) {
+	controller('Main',function ($scope, $location, UserData, CustomerData, DevicesData, AddressData, GroupData) {
+		$scope.search = {
+			term: ''
+		};
+		$scope.doSearch = function(search) {
+			console.log(search);
+		};
 		$scope.requireLogin = function () {
 			UserData.isLoggedIn(function (result) {
 				if (!result || result == "false") {
-					console.log("isLoggedIn", result);
 					$location.url("auth");
 				}
 			});
@@ -51,7 +57,44 @@ angular.module('App', []).
 				DevicesData.delete(id, callback);
 			} else if (type == 'address') {
 				AddressData.delete(id, callback);
+			} else if (type == 'groupDef') {
+				GroupData.deleteDefinition(id, callback);
 			}
+		};
+		$scope.formatDate = function(date) {
+			if (!date) {
+				return "";
+			}
+			if (!(date instanceof Date)) {
+				date = new Date(date);
+			}
+
+			return $scope.formatNumber(date.getUTCDate())+"."+$scope.formatNumber(date.getUTCMonth()+1) + "." + date.getUTCFullYear();
+		};
+		$scope.formatDateInput = function(date) {
+			if (!date) {
+				return "";
+			}
+			if (!(date instanceof Date)) {
+				date = new Date(date);
+			}
+			return date.getUTCFullYear()+"-"+$scope.formatNumber(date.getUTCMonth()+1) + "-" + $scope.formatNumber(date.getUTCDate());
+		};
+		$scope.formatNumber = function(n) {
+			if (n >= 0 && n <= 9) {
+				return "0" + n.toString();
+			}
+			return n.toString();
+		};
+		$scope.formatAddress = function (a) {
+			if (a) {
+				return a.address + ", " + a.house;
+			}
+			return "";
+		};
+		$scope.clipboardAddress = null;
+		$scope.copyClipboard = function(address) {
+			$scope.clipboardAddress = address;
 		};
 	}).
 	controller('Auth',function ($scope, $rootScope, $location, UserData) {
@@ -71,6 +114,11 @@ angular.module('App', []).
 				}
 			});
 		};
+	}).
+	controller('Clipboard', function ($scope) {
+		$scope.requireLogin();
+
+
 	}).
 	controller('CustomerList',function ($scope, $location, CustomerData) {
 		$scope.requireLogin();
@@ -106,11 +154,11 @@ angular.module('App', []).
 			$scope.customer = angular.copy(customer);
 
 			CustomerData.add(customer, function (result) {
-				if (!result.valid) {
-					$scope.errorMessages = result.messages;
-					console.log(result);
+				if (typeof result.valid == "undefined") {
+					$location.url("customer/" + result.id);
 					return;
 				}
+				$scope.errorMessages = result.messages;
 			});
 		};
 	}).
@@ -129,14 +177,11 @@ angular.module('App', []).
 					return;
 				}
 				$scope.errorMessages = result.messages;
-				console.log(result);
 			});
 		};
 		$scope.navigateCancel = function () {
 			$location.url("customer/" + $routeParams.customerId + "/address");
 		};
-
-		console.log($routeParams);
 	}).
 	controller('AddressEdit',function ($scope, $routeParams, $location, AddressData) {
 		$scope.requireLogin();
@@ -227,6 +272,7 @@ angular.module('App', []).
 			{type: 'groups', text: 'Grupid', active: false, visible: true},
 			{type: 'devices', text: 'Sidevahendid', active: false, visible: true}
 		];
+		$scope.newGroup = { name: '' };
 		$scope.id = $routeParams.id;
 		$scope.tab = $scope.tabItems[0].type;
 		if ($routeParams.tab) {
@@ -244,10 +290,19 @@ angular.module('App', []).
 		$scope.setActiveTab = function (tab) {
 			$location.url("customer/" + $scope.id + "/" + tab.type);
 		};
+		$scope.getTabCssClass = function(item) {
+			var css = [];
+			if ($scope.currentTab.type == item.type) {
+				css.push('active');
+			}
+			return css;
+		};
 		$scope.reloadData = function () {
 			CustomerData.getById($scope.id, function (result) {
 				$scope.customer = result;
-				console.log(result);
+				$scope.customer.birthDate = new Date(result.birthDate);
+				$scope.customer.birthDateInput = $scope.formatDateInput($scope.customer.birthDate);
+
 				GroupData.list(function (result) {
 					$scope.groupList = [];
 					for (var i = 0; i < result.length; i++) {
@@ -275,8 +330,13 @@ angular.module('App', []).
 		$scope.navigateEdit = function (type, id) {
 			$location.url("edit/" + type + "/" + id);
 		};
+		$scope.navigateAddAddress = function() {
+			$location.url("add/address/" + $scope.id);
+		};
 
 		$scope.save = function (customer) {
+			console.log(customer);
+			return;
 			CustomerData.update(customer, function (result) {
 				$scope.errorMessages = {};
 				if (!result.valid) {
@@ -302,21 +362,37 @@ angular.module('App', []).
 					customerId: $scope.customer.id
 				};
 				GroupData.add(params, function (result) {
-					console.log(result);
 				});
 			}
 			return true;
 		};
+		$scope.addGroup = function (newGroup) {
+			var params = {
+				name: newGroup.name,
+				customerId: $scope.customer.id
+			};
+			GroupData.insertNew(params, function (result) {
+				$scope.reloadData();
+				$scope.newGroup = { name: '' };
+			});
+		};
+
+
 		$scope.setPrimaryAddress = function (address) {
 			for (var i = 0; i < $scope.customer.addresses.length; i++) {
 				var a = $scope.customer.addresses[i];
 				a.addressType = (a.id == address.id) ? 'Primary' : 'Additional';
 			}
 			AddressData.setPrimaryAddress(address.id, function (result) {
-				console.log(address, result);
 			});
 		};
 
+		$scope.filterAddress = function(address) {
+			return (address.addressType != 'Primary');
+		};
+		$scope.filterPrimary = function(address) {
+			return !$scope.filterAddress(address);
+		};
 	}).
 	factory('UserData',function ($http) {
 		return {
@@ -353,6 +429,12 @@ angular.module('App', []).
 			},
 			add: function (params, callback) {
 				return this.post('add', params, callback);
+			},
+			insertNew: function(params, callback) {
+				return this.post('insertNew', params, callback);
+			},
+			deleteDefinition: function(id, callback) {
+				return this.post('deleteDefinition', {id: id}, callback);
 			},
 			getDefinitionById: function(id, callback) {
 				return this.post('getDefinitionById', {id: id}, callback);

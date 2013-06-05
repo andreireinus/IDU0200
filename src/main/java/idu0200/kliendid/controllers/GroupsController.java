@@ -5,6 +5,7 @@ import idu0200.kliendid.dao.CustomerDao;
 import idu0200.kliendid.dao.GroupDao;
 import idu0200.kliendid.dao.GroupDefinitionDao;
 import idu0200.kliendid.model.Group;
+import idu0200.kliendid.model.GroupDefinition;
 
 import javax.persistence.EntityManager;
 import javax.servlet.annotation.WebServlet;
@@ -47,6 +48,33 @@ public class GroupsController extends ControllerBase {
         em.close();
     }
 
+    public void insertNew(AjaxRequest ajaxRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        EntityManager em = getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            GroupDefinition definition = new GroupDefinition();
+            definition.setName(String.valueOf(ajaxRequest.getParameter("name")));
+            em.persist(definition);
+
+            CustomerDao dbCustomer = new CustomerDao(em);
+
+            Group group = new Group();
+            group.setCreated(getCurrentTimestamp());
+            group.setCreatedBy(getCurrentUser());
+            group.setDefinition(definition);
+            group.setCustomer(dbCustomer.getById((Long)ajaxRequest.getParameter("customerId")));
+
+            em.persist(group);
+
+            em.getTransaction().commit();
+            writeResponse(response, ajaxRequest);
+        } catch (Exception e) {
+            handleException(e, em);
+        }
+        em.close();
+    }
 
     public void remove(AjaxRequest ajaxRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
         EntityManager em = getEntityManager();
@@ -64,4 +92,21 @@ public class GroupsController extends ControllerBase {
         }
         em.close();
     }
+
+    public void deleteDefinition(AjaxRequest ajaxRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        EntityManager em = getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            GroupDefinitionDao db = new GroupDefinitionDao(em);
+            GroupDefinition def = db.getById(ajaxRequest.getId());
+            em.remove(def);
+            em.getTransaction().commit();
+            writeResponse(response, true);
+        } catch (Exception e) {
+            handleException(e, em);
+        }
+        em.close();
+    }
+
 }
