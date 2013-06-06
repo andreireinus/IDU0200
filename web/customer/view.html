@@ -6,6 +6,9 @@
 	</li>
 </ul>
 <div ng-show="currentTab.type == 'main'">
+	<div class="alert alert-success" ng-show="customerSaveNotification">
+		Saved!
+	</div>
 	<form class="form-horizontal">
 		<div ng-class="getFormFieldClass('firstName', customer, errorMessages)">
 			<label class="control-label" for="firstName">Eesnimi</label>

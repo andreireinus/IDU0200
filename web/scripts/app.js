@@ -123,12 +123,12 @@ angular.module('App', []).
 		$scope.loading = true;
 		$scope.results = [];
 
+		console.log("loading start");
 		CustomerData.search($routeParams.term, function(results){
 			$scope.results = results;
 			$scope.loading = false;
+			console.log("loading done.");
 		});
-
-		console.log("search", $routeParams);
 	}).
 	controller('Auth',function ($scope, $rootScope, $location, UserData) {
 		$scope.user = {
@@ -301,7 +301,7 @@ angular.module('App', []).
 			$location.url("customer/" + $scope.device.customer.id + "/devices");
 		};
 	}).
-	controller('Customer',function ($scope, $routeParams, $location, CustomerData, GroupData, AddressData) {
+	controller('Customer',function ($scope, $routeParams, $location, $timeout, CustomerData, GroupData, AddressData) {
 		$scope.requireLogin();
 
 		$scope.customer = {};
@@ -373,8 +373,15 @@ angular.module('App', []).
 			$location.url("add/address/" + $scope.id);
 		};
 
+		$scope.customerSaveNotification = false;
 		$scope.save = function (customer) {
 			CustomerData.update(customer, function (result) {
+				if (typeof result.valid == "undefined") {
+					$scope.customerSaveNotification = true;
+					$timeout(function() {
+						$scope.customerSaveNotification = false;
+					}, 3000);
+				}
 				$scope.errorMessages = {};
 				if (!result.valid) {
 					$scope.errorMessages = result.messages;
@@ -506,8 +513,10 @@ angular.module('App', []).
 	factory('CustomerData',function ($http) {
 		return {
 			post: function (action, params, callback) {
+				console.log(action);
 				params.a = action;
 				return $http.post("api/customer", params).success(function (result) {
+					console.log(action, "done");
 					callback(result);
 				});
 			},

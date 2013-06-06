@@ -15,17 +15,19 @@ import java.util.Set;
         @NamedQuery(name = "Customer.all", query = "select c from Customer c"),
         @NamedQuery(name = "Customer.search", query = "select distinct c " +
                 "from Customer c " +
-                "join c.addresses ca " +
-                "join c.devices d " +
+                "left join c.addresses ca " +
+                "left join c.devices d " +
                 "where " +
-                "c.firstName like :s " +
-                "or c.lastName like :s " +
-                "or ca.address like :s " +
-                "or ca.county like :s " +
-                "or ca.house like :s " +
-                "or ca.townCounty like :s " +
-                "or ca.zip like :s " +
-                "or d.valueText like :s")
+                "1=2 " +
+                "or lower(c.firstName) like :s " +
+                "or lower(c.lastName) like :s " +
+                "or lower(ca.address) like :s " +
+                "or lower(ca.county) like :s " +
+                "or lower(ca.house) like :s " +
+                "or lower(ca.townCounty) like :s " +
+                "or lower(ca.zip) like :s " +
+                "or lower(d.valueText) like :s" +
+                "")
 })
 public class Customer {
     private long id;
