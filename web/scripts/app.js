@@ -1,3 +1,16 @@
+/*
+- veateated
+- clipboard
+- search
+- sisse loginud kasutaja nimi
+
+
+- klassidiagrammid
+- diagrammid
+-
+
+ */
+
 angular.module('App', []).
 	config(function ($routeProvider, $locationProvider) {
 		$locationProvider.html5Mode(false);
@@ -14,6 +27,7 @@ angular.module('App', []).
 			.when("/customer/:id/:tab", { controller: 'Customer', templateUrl: 'customer/view.html'})
 			.when("/clipboard", { controller: 'Clipboard', templateUrl: 'clipboard.html'})
 			.when("/auth", { controller: 'Auth', templateUrl: 'auth/login.html'})
+			.when("/search/:term", { controller: 'Search', templateUrl: 'customer/search.html'})
 			.otherwise({redirectTo: '/auth'});
 	}).
 	controller('Main',function ($scope, $location, UserData, CustomerData, DevicesData, AddressData, GroupData) {
@@ -21,7 +35,10 @@ angular.module('App', []).
 			term: ''
 		};
 		$scope.doSearch = function(search) {
-			console.log(search);
+			if (search.term.length == 0) {
+				return;
+			}
+			$location.url("search/" + search.term);
 		};
 		$scope.requireLogin = function () {
 			UserData.isLoggedIn(function (result) {
@@ -96,6 +113,22 @@ angular.module('App', []).
 		$scope.copyClipboard = function(address) {
 			$scope.clipboardAddress = address;
 		};
+		$scope.navigateView = function (customer) {
+			$location.url("customer/" + customer.id);
+		};
+
+	}).
+	controller('Search', function ($scope, $routeParams, $location, CustomerData) {
+		$scope.search.term = $routeParams.term;
+		$scope.loading = true;
+		$scope.results = [];
+
+		CustomerData.search($routeParams.term, function(results){
+			$scope.results = results;
+			$scope.loading = false;
+		});
+
+		console.log("search", $routeParams);
 	}).
 	controller('Auth',function ($scope, $rootScope, $location, UserData) {
 		$scope.user = {
@@ -127,9 +160,6 @@ angular.module('App', []).
 			$location.url("add/customer");
 		};
 
-		$scope.navigateView = function (customer) {
-			$location.url("customer/" + customer.id);
-		};
 
 		CustomerData.list(function (result) {
 			$scope.Customers = result;
@@ -169,6 +199,15 @@ angular.module('App', []).
 			customerId: $routeParams.customerId
 		};
 
+		$scope.copyAddress = function(d, s) {
+			d.address = s.address;
+			d.house = s.house;
+			d.townCounty = s.townCounty;
+			d.zip =s.zip;
+			d.county = s.county;
+
+			$scope.address = angular.copy(d);
+		};
 		$scope.save = function (address) {
 			$scope.address = angular.copy(address);
 			AddressData.add(address, function (result) {
@@ -335,8 +374,6 @@ angular.module('App', []).
 		};
 
 		$scope.save = function (customer) {
-			console.log(customer);
-			return;
 			CustomerData.update(customer, function (result) {
 				$scope.errorMessages = {};
 				if (!result.valid) {
@@ -485,6 +522,9 @@ angular.module('App', []).
 			},
 			update: function (params, callback) {
 				return this.post("update", params, callback);
+			},
+			search: function (term, callback) {
+				return this.post("search", {term: term}, callback);
 			}
 		};
 	}).

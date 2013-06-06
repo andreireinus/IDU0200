@@ -12,7 +12,20 @@ import java.util.Set;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Customer.all", query = "select c from Customer c")
+        @NamedQuery(name = "Customer.all", query = "select c from Customer c"),
+        @NamedQuery(name = "Customer.search", query = "select distinct c " +
+                "from Customer c " +
+                "join c.addresses ca " +
+                "join c.devices d " +
+                "where " +
+                "c.firstName like :s " +
+                "or c.lastName like :s " +
+                "or ca.address like :s " +
+                "or ca.county like :s " +
+                "or ca.house like :s " +
+                "or ca.townCounty like :s " +
+                "or ca.zip like :s " +
+                "or d.valueText like :s")
 })
 public class Customer {
     private long id;

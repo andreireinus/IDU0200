@@ -22,4 +22,10 @@ public class CustomerDao extends DaoBase<Customer> {
 
         return (List<Customer>)q.getResultList();
     }
+
+    public List<Customer> search(String search) {
+        Query q = em.createNamedQuery("Customer.search").setParameter("s", "%" + search.toLowerCase() + "%");
+
+        return (List<Customer>)q.getResultList();
+    }
 }

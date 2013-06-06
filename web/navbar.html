@@ -19,7 +19,7 @@
 				<div class="controls">
 					<div class="input-append">
 						<input type="search" class="span3" placeholder="Search" name="search" id="search"
-							   ng-model="search.term"/>
+							   ng-model="search.term" ui-keypress="{'enter':'doSearch(search)'}"/>
 							<span class="add-on">
                         		<i class="icon-search" ng-click="doSearch(search)"></i>
                     		</span>

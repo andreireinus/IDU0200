@@ -32,6 +32,14 @@ public class CustomerValidator extends Validator<Customer> {
             } catch (ParseException e) {
             }
         }
+        if (values.containsKey("birthDateInput")) {
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formatter.parse(String.valueOf(values.get("birthDateInput")));
+                customer.setBirthDate(new Timestamp(date.getTime()));
+            } catch (ParseException e) {
+            }
+        }
 
 
         if (customer.getFirstName() == null || customer.getFirstName().length() == 0) {

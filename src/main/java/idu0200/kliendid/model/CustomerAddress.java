@@ -11,15 +11,8 @@ public class CustomerAddress {
     private String house;
     private String address;
     private String county;
-    private String parish;
     private String townCounty;
     private AddressType addressType;
-    private String phone;
-    private String sms;
-    private String mobile;
-    private String email;
-    private String note;
-    private Long country;
 
     @Column(name = "cst_address", nullable = false, insertable = true, updatable = false, length = 30, precision = 0)
     @Id
@@ -82,16 +75,6 @@ public class CustomerAddress {
         this.county = county;
     }
 
-    @Column(name = "parish", nullable = true, insertable = true, updatable = true, length = 100, precision = 0)
-    @Basic
-    public String getParish() {
-        return parish;
-    }
-
-    public void setParish(String parish) {
-        this.parish = parish;
-    }
-
     @Column(name = "town_county", nullable = true, insertable = true, updatable = true, length = 100, precision = 0)
     @Basic
     public String getTownCounty() {
@@ -112,66 +95,6 @@ public class CustomerAddress {
         this.addressType = addressType;
     }
 
-    @Column(name = "phone", nullable = true, insertable = true, updatable = true, length = 20, precision = 0)
-    @Basic
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Column(name = "sms", nullable = true, insertable = true, updatable = true, length = 20, precision = 0)
-    @Basic
-    public String getSms() {
-        return sms;
-    }
-
-    public void setSms(String sms) {
-        this.sms = sms;
-    }
-
-    @Column(name = "mobile", nullable = true, insertable = true, updatable = true, length = 20, precision = 0)
-    @Basic
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    @Column(name = "email", nullable = true, insertable = true, updatable = true, length = 30, precision = 0)
-    @Basic
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Column(name = "note", nullable = true, insertable = true, updatable = true, length = 50, precision = 0)
-    @Basic
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    @Column(name = "country", nullable = true, insertable = true, updatable = true, length = 30, precision = 0)
-    @Basic
-    Long getCountry() {
-        return country;
-    }
-
-    void setCountry(Long country) {
-        this.country = country;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -182,16 +105,9 @@ public class CustomerAddress {
         if (id != that.id) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (addressType != null ? !addressType.equals(that.addressType) : that.addressType != null) return false;
-        if (country != null ? !country.equals(that.country) : that.country != null) return false;
         if (county != null ? !county.equals(that.county) : that.county != null) return false;
         if (customer != null ? !customer.equals(that.customer) : that.customer != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
         if (house != null ? !house.equals(that.house) : that.house != null) return false;
-        if (mobile != null ? !mobile.equals(that.mobile) : that.mobile != null) return false;
-        if (note != null ? !note.equals(that.note) : that.note != null) return false;
-        if (parish != null ? !parish.equals(that.parish) : that.parish != null) return false;
-        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
-        if (sms != null ? !sms.equals(that.sms) : that.sms != null) return false;
         if (townCounty != null ? !townCounty.equals(that.townCounty) : that.townCounty != null) return false;
         if (zip != null ? !zip.equals(that.zip) : that.zip != null) return false;
 
@@ -206,15 +122,8 @@ public class CustomerAddress {
         result = 31 * result + (house != null ? house.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (county != null ? county.hashCode() : 0);
-        result = 31 * result + (parish != null ? parish.hashCode() : 0);
         result = 31 * result + (townCounty != null ? townCounty.hashCode() : 0);
         result = 31 * result + (addressType != null ? addressType.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (sms != null ? sms.hashCode() : 0);
-        result = 31 * result + (mobile != null ? mobile.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (note != null ? note.hashCode() : 0);
-        result = 31 * result + (country != null ? country.hashCode() : 0);
         return result;
     }
 }

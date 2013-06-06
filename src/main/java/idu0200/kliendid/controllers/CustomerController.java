@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(urlPatterns = "/api/customer", name = "Customer")
 public class CustomerController extends ControllerBase {
@@ -84,4 +85,11 @@ public class CustomerController extends ControllerBase {
         em.close();
     }
 
+    public void search(AjaxRequest ajaxRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        EntityManager em = getEntityManager();
+        CustomerDao db = new CustomerDao(em);
+        List<Customer> result = db.search(String.valueOf(ajaxRequest.getParameter("term")));
+        writeResponse(response, result);
+        em.close();
+    }
 }

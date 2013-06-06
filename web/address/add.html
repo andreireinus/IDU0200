@@ -1,6 +1,8 @@
 <ng-include src="'navbar.html'"></ng-include>
 
 <form class="form-horizontal">
+	<a ng-show="clipboardAddress" ng-click="copyAddress(address, clipboardAddress)" type="submit" class="btn btn-primary">Paste Clipboard</a>
+
 	<fieldset>
 		<legend>Aadress</legend>
 		<div ng-class="getFormFieldClass('address', address, errorMessages)">
@@ -36,14 +38,6 @@
 				<span class="help-inline" ng-show="errorMessages.zip" ng-bind="errorMessages.zip"></span>
 			</div>
 		</div>
-		<div ng-class="getFormFieldClass('parish', address, errorMessages)">
-			<label class="control-label" for="parish">Vald</label>
-
-			<div class="controls">
-				<input type="text" id="parish" name="parish" ng-model="address.parish">
-				<span class="help-inline" ng-show="errorMessages.parish" ng-bind="errorMessages.parish"></span>
-			</div>
-		</div>
 
 		<div ng-class="getFormFieldClass('county', address, errorMessages)">
 			<label class="control-label" for="county">Maakond</label>
@@ -53,54 +47,8 @@
 				<span class="help-inline" ng-show="errorMessages.county" ng-bind="errorMessages.county"></span>
 			</div>
 		</div>
-	</fieldset>
-
-	<fieldset>
-		<legend>Muu</legend>
-		<div ng-class="getFormFieldClass('phone', address, errorMessages)">
-			<label class="control-label" for="phone">Telefon</label>
-
-			<div class="controls">
-				<input type="text" id="phone" name="phone" ng-model="address.phone">
-				<span class="help-inline" ng-show="errorMessages.phone" ng-bind="errorMessages.phone"></span>
-			</div>
-		</div>
-		<div ng-class="getFormFieldClass('sms', address, errorMessages)">
-			<label class="control-label" for="sms">SMS</label>
-
-			<div class="controls">
-				<input type="text" id="sms" name="sms" ng-model="address.sms">
-				<span class="help-inline" ng-show="errorMessages.sms" ng-bind="errorMessages.sms"></span>
-			</div>
-		</div>
-		<div ng-class="getFormFieldClass('mobile', address, errorMessages)">
-			<label class="control-label" for="mobile">Mobiil</label>
-
-			<div class="controls">
-				<input type="text" id="mobile" name="mobile" ng-model="address.mobile">
-				<span class="help-inline" ng-show="errorMessages.mobile" ng-bind="errorMessages.mobile"></span>
-			</div>
-		</div>
-		<div ng-class="getFormFieldClass('email', address, errorMessages)">
-			<label class="control-label" for="email">Email</label>
-
-			<div class="controls">
-				<input type="email" id="email" name="email" ng-model="address.email">
-				<span class="help-inline" ng-show="errorMessages.email" ng-bind="errorMessages.email"></span>
-			</div>
-		</div>
-		<div ng-class="getFormFieldClass('note', address, errorMessages)">
-			<label class="control-label" for="note">M&auml;rkus</label>
-
-			<div class="controls">
-				<input type="text" id="note" name="note" ng-model="address.note">
-				<span class="help-inline" ng-show="errorMessages.note" ng-bind="errorMessages.note"></span>
-			</div>
-		</div>
 
 	</fieldset>
-
-
 
 	<div class="form-actions">
 		<a ng-click="save(address)" type="submit" class="btn btn-primary">Salvesta</a>
