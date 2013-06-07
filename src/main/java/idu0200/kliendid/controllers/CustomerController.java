@@ -44,6 +44,7 @@ public class CustomerController extends ControllerBase {
         if (result.isValid()) {
             try {
                 em.getTransaction().begin();
+                customer.setUpdated(getCurrentTimestamp());
                 em.persist(customer);
                 em.getTransaction().commit();
                 writeResponse(response, customer);
@@ -69,6 +70,7 @@ public class CustomerController extends ControllerBase {
         if (result.isValid()) {
             try {
                 em.getTransaction().begin();
+                customer.setUpdated(getCurrentTimestamp());
                 em.persist(customer);
                 em.getTransaction().commit();
 
